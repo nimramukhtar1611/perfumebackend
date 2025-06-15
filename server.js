@@ -7,7 +7,14 @@ const router = require ('./routes/perfumeRoutes')
 const menrouter = require ('./routes/menperfumeroutes')
 const womenrouter = require ('./routes/womenperfumeroutes')
 const adminrouter = require ('./routes/adminroutes')
-app.use(cors());
+const corsOptions = {
+  origin: ['https://your-frontend.vercel.app'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  credentials: true
+};
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 connection()
 app.use(express.json());
