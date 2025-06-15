@@ -8,7 +8,7 @@ const menrouter = require ('./routes/menperfumeroutes')
 const womenrouter = require ('./routes/womenperfumeroutes')
 const adminrouter = require ('./routes/adminroutes')
 const corsOptions = {
-  origin: ['https://your-frontend.vercel.app'],
+  origin: ['https://perfume-woad.vercel.app'],
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type'],
   credentials: true
