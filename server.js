@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const path = require ('path')
-const PORT = 5000;
 const cors = require ('cors')
 const connection = require ('./config/mongoose')
 const router = require ('./routes/perfumeRoutes')
@@ -19,6 +18,3 @@ app.use ('/api/luxury',router)
 app.use ('/api/men',menrouter)
 app.use ('/api/womens',womenrouter)
 app.use('/api/admin', adminrouter);
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
