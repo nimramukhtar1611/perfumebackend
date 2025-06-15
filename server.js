@@ -12,7 +12,6 @@ const corsOptions = {
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 connection()
 app.use(express.json());
