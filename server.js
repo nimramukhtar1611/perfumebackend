@@ -7,7 +7,11 @@ const router = require ('./routes/perfumeRoutes')
 const menrouter = require ('./routes/menperfumeroutes')
 const womenrouter = require ('./routes/womenperfumeroutes')
 const adminrouter = require ('./routes/adminroutes')
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+};
+app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 connection()
