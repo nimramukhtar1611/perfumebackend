@@ -18,3 +18,4 @@ app.use ('/api/luxury',router)
 app.use ('/api/men',menrouter)
 app.use ('/api/womens',womenrouter)
 app.use('/api/admin', adminrouter);
+module.exports=app
