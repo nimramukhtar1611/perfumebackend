@@ -1,35 +1,44 @@
-const Perfume = require('../models/perfume');
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
 const adminrouter = express.Router();
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/'); 
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-const upload = multer({ storage: storage });
+const Perfume = require('../models/perfume');
+const { upload, cloudinary }= require('../config/cloudinaryUpload');
 adminrouter.post("/perfumes", upload.single('image'), async (req, res) => {
-  const { title, description } = req.body;
-  const image = req.file ? `/uploads/${req.file.filename}` : '';
   try {
-    const newPerfume = new Perfume({ title, image, description });
+    const file = req.file;
+    const { title, description } = req.body;
+    if (!file || !title || !description) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: 'perfumes' },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      uploadStream.end(file.buffer);
+    });
+
+    const newPerfume = new Perfume({
+      title,
+      description,
+      image: result.secure_url
+    });
     await newPerfume.save();
+
     res.status(201).json({ message: "Perfume added successfully" });
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Upload Error:", error);
     res.status(500).json({ error: "Failed to add perfume" });
   }
 });
+
 adminrouter.get("/perfumes", async (req, res) => {
   try {
     const perfumes = await Perfume.find();
     res.status(200).json(perfumes);
   } catch (error) {
-    console.log("Error:", error);
     res.status(500).json({ error: "Failed to fetch perfumes" });
   }
 });
